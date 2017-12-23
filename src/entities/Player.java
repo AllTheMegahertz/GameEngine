@@ -2,10 +2,11 @@ package entities;
 
 import blocks.BlockPosition;
 import blocks.BlockType;
+import collision.BoundingBox;
+import collision.Collider;
 import models.TexturedModel;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
 
@@ -13,7 +14,7 @@ import renderEngine.DisplayManager;
  * Created by AllTheMegahertz on 8/18/2017.
  */
 
-public class Player extends Entity {
+public class Player extends Entity implements Collider {
 
 	private static final float MOVEMENT_SPEED = 10;
 	private static final float TURN_SPEED = 100;
@@ -26,11 +27,13 @@ public class Player extends Entity {
 	private float currentTurnSpeed = 0;
 
 	private World world;
+	private BoundingBox boundingBox;
 
 	//TODO: Implement a location class so that "world" does not need to be separately passed to the constructor
 	public Player(TexturedModel model, Vector3f position, World world, float rotX, float rotY, float rotZ, float scale) {
 		super(model, position, rotX, rotY, rotZ, scale);
 		this.world = world;
+		boundingBox = new BoundingBox(position, new Vector3f(0.5f, 1, 0.5f));
 	}
 
 	public void move() {
@@ -90,11 +93,16 @@ public class Player extends Entity {
 			ySpeed = JUMP_POWER;
 		}
 
+		boundingBox.setCenter(getPosition());
 
 	}
 
 	private boolean isInAir() {
 		return world.getBlock(new BlockPosition((int) getPosition().x, (int) getPosition().y, (int) getPosition().z)).getBlockType() == BlockType.Air;
+	}
+
+	public BoundingBox getBoundingBox() {
+		return boundingBox;
 	}
 
 }

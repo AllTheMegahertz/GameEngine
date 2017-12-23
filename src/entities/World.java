@@ -3,9 +3,10 @@ package entities;
 import blocks.Block;
 import blocks.BlockPosition;
 import blocks.BlockType;
+import collision.BoundingBox;
+import collision.ColliderEngine;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -20,19 +21,22 @@ public class World {
 	private HashMap<BlockPosition, Block> blocks = new HashMap<BlockPosition, Block>();
 	private HashMap<BlockPosition, Block> openBlocks = new HashMap<BlockPosition, Block>();
 
-	public World() {
+	private ColliderEngine colliderEngine;
 
+	public World() {
+		colliderEngine = new ColliderEngine(this);
 	}
 
-	public void addBlock(Block block) {
+	//Only for use by addBlocks method
+	private void addBlock(Block block) {
 		blocks.put(block.getPosition(), block);
-		processBlocks();
+		colliderEngine.addBoundingBox(block.getBoundingBox());
 	}
 
 	public void addBlocks(ArrayList<Block> blocks) {
 
 		for (Block block : blocks) {
-			this.blocks.put(block.getPosition(), block);
+			addBlock(block);
 		}
 
 		processBlocks();
@@ -69,13 +73,14 @@ public class World {
 		return entities;
 	}
 
-	public void addEntity(Entity entity) {
+	//Only for use by addEntities method
+	private void addEntity(Entity entity) {
 		entities.add(entity);
 	}
 
 	public void addEntities(ArrayList<Entity> entities) {
 		for (Entity entity : entities) {
-			this.entities.add(entity);
+			addEntity(entity);
 		}
 	}
 
