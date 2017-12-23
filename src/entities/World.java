@@ -4,6 +4,7 @@ import blocks.Block;
 import blocks.BlockPosition;
 import blocks.BlockType;
 import collision.BoundingBox;
+import collision.Collider;
 import collision.ColliderEngine;
 
 import java.util.ArrayList;
@@ -23,8 +24,8 @@ public class World {
 
 	private ColliderEngine colliderEngine;
 
-	public World() {
-		colliderEngine = new ColliderEngine(this);
+	public World(ColliderEngine colliderEngine) {
+		this.colliderEngine = colliderEngine;
 	}
 
 	//Only for use by addBlocks method

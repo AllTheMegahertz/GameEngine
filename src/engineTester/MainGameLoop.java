@@ -3,6 +3,7 @@ package engineTester;
 import blocks.Block;
 import blocks.BlockPosition;
 import blocks.BlockType;
+import collision.ColliderEngine;
 import entities.*;
 import guis.GuiRenderer;
 import guis.GuiTexture;
@@ -40,7 +41,8 @@ public class MainGameLoop {
 
 		Loader loader = new Loader();
 
-		World world = new World();
+		ColliderEngine colliderEngine = new ColliderEngine();
+		World world = new World(colliderEngine);
 
 		ModelTexture texture = new ModelTexture(loader.loadTexture("white"));
 
@@ -79,6 +81,8 @@ public class MainGameLoop {
 
 			player.move();
 			camera.move();
+
+			colliderEngine.handleCollisions();
 
 			renderer.processWorld(world);
 			renderer.processEntity(player);
