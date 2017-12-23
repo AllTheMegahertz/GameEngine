@@ -124,6 +124,10 @@ public class World {
 
 	}
 
+	public ColliderEngine getColliderEngine() {
+		return colliderEngine;
+	}
+
 	public static int getMaxHeight() {
 		return MAX_HEIGHT;
 	}

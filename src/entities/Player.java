@@ -59,6 +59,9 @@ public class Player extends Entity implements Collider {
 
 		ySpeed += GRAVITY * DisplayManager.getFrameTime();
 
+		boundingBox.setCenter(getPosition());
+		world.getColliderEngine().handleCollisions(boundingBox);
+
 	}
 
 	private void checkInputs() {
@@ -92,8 +95,6 @@ public class Player extends Entity implements Collider {
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) && !isInAir()) {
 			ySpeed = JUMP_POWER;
 		}
-
-		boundingBox.setCenter(getPosition());
 
 	}
 

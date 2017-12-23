@@ -82,8 +82,6 @@ public class MainGameLoop {
 			player.move();
 			camera.move();
 
-			colliderEngine.handleCollisions();
-
 			renderer.processWorld(world);
 			renderer.processEntity(player);
 
