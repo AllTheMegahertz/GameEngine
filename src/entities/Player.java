@@ -44,21 +44,7 @@ public class Player extends Entity {
 		float xDistance = xSpeed * DisplayManager.getFrameTime();
 		float zDistance = zSpeed * DisplayManager.getFrameTime();
 
-		if (checkXCollisions()) {
-			xSpeed = 0;
-			xDistance = 0;
-		}
-
-		if (checkYCollisions()) {
-			if (ySpeed < 0) {
-				ySpeed = 0;
-			}
-		}
-
-		if (checkZCollisions()) {
-			zSpeed = 0;
-			zDistance = 0;
-		}
+		//TODO: Implement Collisions
 
 		super.increasePosition(
 				xDistance * (float) Math.cos(Math.toRadians(getRotY())) + zDistance * (float) Math.sin(Math.toRadians(getRotY())),
@@ -109,28 +95,6 @@ public class Player extends Entity {
 
 	private boolean isInAir() {
 		return world.getBlock(new BlockPosition((int) getPosition().x, (int) getPosition().y, (int) getPosition().z)).getBlockType() == BlockType.Air;
-	}
-
-	private boolean checkXCollisions() {
-		return  toolbox.Math.checkCollision(world.getBlock(new BlockPosition((int) getPosition().x - 1, (int) getPosition().y + 1, (int) getPosition().z)), this) ||
-				toolbox.Math.checkCollision(world.getBlock(new BlockPosition((int) getPosition().x + 1, (int) getPosition().y + 1, (int) getPosition().z)), this) ||
-				toolbox.Math.checkCollision(world.getBlock(new BlockPosition((int) getPosition().x - 1, (int) getPosition().y + 2, (int) getPosition().z)), this) ||
-				toolbox.Math.checkCollision(world.getBlock(new BlockPosition((int) getPosition().x + 1, (int) getPosition().y + 2, (int) getPosition().z)), this);
-	}
-
-	private boolean checkYCollisions() {
-
-		float y = (float) Math.ceil(getPosition().y);
-
-		return  toolbox.Math.checkCollision(world.getBlock(new BlockPosition((int) getPosition().x, (int) y, (int) getPosition().z)), this) ||
-				toolbox.Math.checkCollision(world.getBlock(new BlockPosition((int) getPosition().x, (int) y + 2, (int) getPosition().z)), this);
-	}
-
-	private boolean checkZCollisions() {
-		return  toolbox.Math.checkCollision(world.getBlock(new BlockPosition((int) getPosition().x, (int) getPosition().y + 1, (int) getPosition().z - 1)), this) ||
-				toolbox.Math.checkCollision(world.getBlock(new BlockPosition((int) getPosition().x, (int) getPosition().y + 1, (int) getPosition().z + 1)), this) ||
-				toolbox.Math.checkCollision(world.getBlock(new BlockPosition((int) getPosition().x, (int) getPosition().y + 2, (int) getPosition().z - 1)), this) ||
-				toolbox.Math.checkCollision(world.getBlock(new BlockPosition((int) getPosition().x, (int) getPosition().y + 2, (int) getPosition().z + 1)), this);
 	}
 
 }

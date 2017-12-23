@@ -67,32 +67,5 @@ public class Math {
 
 	}
 
-	public static boolean checkCollision(Block block, Player player) {
-
-		if (block.getBlockType() == BlockType.Air) {
-			return false;
-		}
-
-		//check the X axis
-		if(java.lang.Math.abs(block.getPosition().getX() - player.getPosition().getX()) < 1 + 1)
-		{
-			//check the Y axis
-			if(java.lang.Math.abs(block.getPosition().getY() - player.getPosition().getY()) < 1 + 2)
-			{
-				//check the Z axis
-				if(java.lang.Math.abs(block.getPosition().getZ() - player.getPosition().getZ()) < 1 + 1)
-				{
-					return true;
-				}
-			}
-		}
-
-		return false;
-
-//		return  java.lang.Math.abs(block.getPosition().getX() - player.getPosition().x) < 1 + 0.75f &&
-//				java.lang.Math.abs(block.getPosition().getY() - player.getPosition().y) < 1 + 2 &&
-//				java.lang.Math.abs(block.getPosition().getZ() - player.getPosition().z) < 1 + 0.75f;
-
-	}
 
 }
