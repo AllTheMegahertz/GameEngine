@@ -54,28 +54,16 @@ public class Player extends Entity implements Collider {
 		float dx = xDistance * (float) Math.cos(Math.toRadians(getRotY())) + zDistance * (float) Math.sin(Math.toRadians(getRotY()));
 		float dz = zDistance * (float) Math.cos(Math.toRadians(getRotY())) - xDistance * (float) Math.sin(Math.toRadians(getRotY()));
 
-		collisions = world.getColliderEngine().handleCollisions(boundingBox);
+		BoundingBox testBox = new BoundingBox(Vector3f.add(boundingBox.getCenter(), new Vector3f(dx, ySpeed, dz), new Vector3f()), boundingBox.getHalfExtent());
+		collisions = world.getColliderEngine().handleCollisions(testBox);
+
 		for (BoundingBox box : collisions) {
 
-			boolean xlevel = box.getCenter().x != Math.floor(boundingBox.getCenter().x);
-			boolean ylevel = box.getCenter().y != Math.floor(boundingBox.getCenter().y);
-			boolean zlevel = box.getCenter().z != Math.floor(boundingBox.getCenter().z);
-
-			if (box.getCenter().x < boundingBox.getCenter().x && dx < 0 && !(ylevel || zlevel)) {
-				dx = 0;
-			} else if (box.getCenter().x > boundingBox.getCenter().x && dx > 0) {
-				dx = 0;
-			}
-
-			if (box.getCenter().y < boundingBox.getCenter().y && ySpeed < 0 && !(xlevel || zlevel)) {
-				ySpeed = 0;
-			} else if (box.getCenter().y > boundingBox.getCenter().y && ySpeed > 0) {
+			if ((ySpeed < 0 && Math.floor(testBox.getCenter().getY()) - 1 < box.getCenter().y) || (ySpeed > 0 && Math.floor(testBox.getCenter().getY() - 1) > box.getCenter().y)) {
 				ySpeed = 0;
 			}
 
-			if (box.getCenter().z < boundingBox.getCenter().z && dz < 0 && !(xlevel || ylevel)) {
-				dz = 0;
-			} else if (box.getCenter().z > boundingBox.getCenter().z && dz > 0) {
+			if ((dz < 0 && Math.floor(testBox.getCenter().getZ()) < box.getCenter().z) || (dz > 0 && Math.floor(testBox.getCenter().getZ()) > box.getCenter().z)) {
 				dz = 0;
 			}
 
