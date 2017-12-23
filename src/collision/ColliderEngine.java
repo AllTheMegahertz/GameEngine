@@ -28,23 +28,33 @@ public class ColliderEngine {
 	}
 
 	//Handles collisions for one box with respect to all other boxes
-	public void handleCollisions(BoundingBox box) {
+	public ArrayList<BoundingBox> handleCollisions(BoundingBox box) {
+
+		ArrayList<BoundingBox> boxes = new ArrayList<>();
+
 		for (BoundingBox box2 : boundingBoxes) {
 			if (box != box2) {
-				handleCollision(box, box2);
+				if (handleCollision(box, box2)) {
+					boxes.add(box2);
+				}
 			}
 		}
+
+		return boxes;
+
 	}
 
 	//Handles collisions for one box with respect to one other box
-	public void handleCollision(BoundingBox box1, BoundingBox box2) {
+	public boolean handleCollision(BoundingBox box1, BoundingBox box2) {
+
+		boolean intersecting = false;
 
 		if (Vector3f.sub(box1.getCenter(), box2.getCenter(), new Vector3f()).length() < box1.getHalfExtent().length() + box2.getHalfExtent().length()) {
 			Collision data = box1.getCollision(box2);
-			if (data.isIntersecting) {
-				System.out.println("Collision at " + box1.getCenter().x + " " + box1.getCenter().getY() + " " + box1.getCenter().getZ());
-			}
+			intersecting = data.isIntersecting;
 		}
+
+		return intersecting;
 
 	}
 
