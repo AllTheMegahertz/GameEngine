@@ -83,7 +83,7 @@ public class MainGameLoop {
 			camera.move();
 
 			renderer.processWorld(world);
-			renderer.processEntity(player);
+//			renderer.processEntity(player);
 
 			renderer.render(light, camera);
 			guiRenderer.render(guis);

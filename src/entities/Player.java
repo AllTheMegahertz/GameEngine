@@ -76,6 +76,7 @@ public class Player extends Entity implements Collider {
 			}
 
 			if (!xCheck && yCheck && !zCheck) {
+				setPosition(new Vector3f(getPosition().x, getPosition().y - boundingBox.getCollision(box).distance.y, getPosition().z));
 				ySpeed = 0;
 				onGround = true;
 			}

@@ -19,7 +19,7 @@ public class Camera {
 
 	private float distanceFromPlayer = 0;
 	private float angleAroundPlayer = 0;
-	private float heightOffset = 1.85f;
+	private float heightOffset = 0.85f;
 
 	private Player player;
 
@@ -30,19 +30,18 @@ public class Camera {
 
 	public void move() {
 
-		distanceFromPlayer -= Mouse.getDWheel() * 0.025f;
-		distanceFromPlayer = Math.max(0, distanceFromPlayer);
-
 		pitch -= Mouse.getDY() * 0.08f;
 		pitch = Math.min(90, Math.max(-90 ,pitch));
 
-
-		float verticalDistance = distanceFromPlayer * (float) Math.sin(Math.toRadians(pitch));
-		float horizontalDistance = distanceFromPlayer * (float) Math.cos(Math.toRadians(pitch));
-
-		calculateCameraPosition(verticalDistance, horizontalDistance);
-
+		calculateCameraPosition(0, 0);
 		yaw = 180 - angleAroundPlayer - player.getRotY();
+
+		//TODO: Save following code for third person mode
+//		distanceFromPlayer -= Mouse.getDWheel() * 0.025f;
+//		distanceFromPlayer = Math.max(0, distanceFromPlayer);
+//
+//		float verticalDistance = distanceFromPlayer * (float) Math.sin(Math.toRadians(pitch));
+//		float horizontalDistance = distanceFromPlayer * (float) Math.cos(Math.toRadians(pitch));
 
 	}
 
