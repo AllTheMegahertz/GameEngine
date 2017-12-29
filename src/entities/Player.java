@@ -20,10 +20,10 @@ import java.util.HashMap;
 
 public class Player extends Entity implements Collider {
 
-	private static final float MOVEMENT_SPEED = 10;
+	private static final float MOVEMENT_SPEED = 7;
 	private static final float TURN_SPEED = 100;
 	private static final float GRAVITY = -0.5f;
-	private static final float JUMP_POWER = 0.2f;
+	private static final float JUMP_POWER = 0.15f;
 
 	private float xSpeed = 0;
 	private float ySpeed = 0;
@@ -33,7 +33,6 @@ public class Player extends Entity implements Collider {
 	private World world;
 	private BoundingBox boundingBox;
 	private ArrayList<BoundingBox> collisions;
-	private HashMap<BoundingBox, Collision> previousCollisions;
 	private boolean onGround = false;
 
 	//TODO: Implement a location class so that "world" does not need to be separately passed to the constructor
@@ -42,7 +41,6 @@ public class Player extends Entity implements Collider {
 		this.world = world;
 		boundingBox = new BoundingBox(new Vector3f(getPosition().x, getPosition().y, getPosition().z), new Vector3f(0.5f, 0.5f, 0.5f));
 		collisions = new ArrayList<>();
-		previousCollisions = new HashMap<>();
 	}
 
 	public void move() {
@@ -92,10 +90,6 @@ public class Player extends Entity implements Collider {
 
 		boundingBox.setCenter(new Vector3f(getPosition().x, getPosition().y, getPosition().z));
 
-		for (BoundingBox box : collisions) {
-			previousCollisions.put(box, boundingBox.getCollision(box));
-		}
-
 	}
 
 	private void checkInputs() {
@@ -103,7 +97,7 @@ public class Player extends Entity implements Collider {
 		float movementSpeed = MOVEMENT_SPEED;
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			movementSpeed *= 2;
+			movementSpeed *= 1.5;
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
