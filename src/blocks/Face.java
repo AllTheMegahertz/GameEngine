@@ -1,5 +1,7 @@
 package blocks;
 
+import collision.BoundingBox;
+import collision.Collider;
 import entities.Entity;
 import entities.TextureIndex;
 import models.RawModel;

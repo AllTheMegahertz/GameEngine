@@ -4,6 +4,7 @@ import blocks.BlockPosition;
 import blocks.BlockType;
 import collision.BoundingBox;
 import collision.Collider;
+import collision.Collision;
 import models.TexturedModel;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -11,6 +12,7 @@ import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by AllTheMegahertz on 8/18/2017.
@@ -31,18 +33,19 @@ public class Player extends Entity implements Collider {
 	private World world;
 	private BoundingBox boundingBox;
 	private ArrayList<BoundingBox> collisions;
+	private HashMap<BoundingBox, Collision> previousCollisions;
+	private boolean onGround = false;
 
 	//TODO: Implement a location class so that "world" does not need to be separately passed to the constructor
 	public Player(TexturedModel model, Vector3f position, World world, float rotX, float rotY, float rotZ, float scale) {
 		super(model, position, rotX, rotY, rotZ, scale);
 		this.world = world;
-		boundingBox = new BoundingBox(new Vector3f(getPosition().x, getPosition().y + 1, getPosition().z), new Vector3f(0.5f, 0.5f, 0.5f));
+		boundingBox = new BoundingBox(new Vector3f(getPosition().x, getPosition().y, getPosition().z), new Vector3f(0.5f, 0.5f, 0.5f));
 		collisions = new ArrayList<>();
+		previousCollisions = new HashMap<>();
 	}
 
 	public void move() {
-
-		Vector3f currentPosition = getPosition();
 
 		checkInputs();
 
@@ -54,28 +57,43 @@ public class Player extends Entity implements Collider {
 		float dx = xDistance * (float) Math.cos(Math.toRadians(getRotY())) + zDistance * (float) Math.sin(Math.toRadians(getRotY()));
 		float dz = zDistance * (float) Math.cos(Math.toRadians(getRotY())) - xDistance * (float) Math.sin(Math.toRadians(getRotY()));
 
+		if (!onGround) {
+			ySpeed += GRAVITY * DisplayManager.getFrameTime();
+		}
+
 		BoundingBox testBox = new BoundingBox(Vector3f.add(boundingBox.getCenter(), new Vector3f(dx, ySpeed, dz), new Vector3f()), boundingBox.getHalfExtent());
 		collisions = world.getColliderEngine().handleCollisions(testBox);
 
+		onGround = false;
 		for (BoundingBox box : collisions) {
 
-			if ((ySpeed < 0 && Math.floor(testBox.getCenter().getY()) - 1 < box.getCenter().y) || (ySpeed > 0 && Math.floor(testBox.getCenter().getY() - 1) > box.getCenter().y)) {
-				ySpeed = 0;
+			boolean xCheck = (int) Math.floor(box.getCenter().x) != Math.round(testBox.getCenter().x);
+			boolean yCheck = (int) Math.floor(box.getCenter().y) != Math.round(testBox.getCenter().y);
+			boolean zCheck = (int) Math.floor(box.getCenter().z) != Math.round(testBox.getCenter().z);
+
+			if (xCheck && !yCheck && !zCheck) {
+				dx = 0;
 			}
 
-			if ((dz < 0 && Math.floor(testBox.getCenter().getZ()) < box.getCenter().z) || (dz > 0 && Math.floor(testBox.getCenter().getZ()) > box.getCenter().z)) {
+			if (!xCheck && yCheck && !zCheck) {
+				ySpeed = 0;
+				onGround = true;
+			}
+
+			if (!xCheck && !yCheck && zCheck) {
 				dz = 0;
 			}
 
 		}
 
 		super.increasePosition(dx, ySpeed, dz);
-
 		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTime(), 0);
 
-		ySpeed += GRAVITY * DisplayManager.getFrameTime();
+		boundingBox.setCenter(new Vector3f(getPosition().x, getPosition().y, getPosition().z));
 
-		boundingBox.setCenter(new Vector3f(getPosition().x, getPosition().y + 1, getPosition().z));
+		for (BoundingBox box : collisions) {
+			previousCollisions.put(box, boundingBox.getCollision(box));
+		}
 
 	}
 
@@ -107,21 +125,9 @@ public class Player extends Entity implements Collider {
 			xSpeed = 0;
 		}
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) && !isInAir()) {
+		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) && onGround) {
 			ySpeed = JUMP_POWER;
 		}
-
-	}
-
-	private boolean isInAir() {
-
-		for (BoundingBox box : collisions) {
-			if (box.getCenter().y < boundingBox.getCenter().y) {
-				return false;
-			}
-		}
-
-		return true;
 
 	}
 

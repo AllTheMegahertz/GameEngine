@@ -16,4 +16,8 @@ public class Collision {
 		this.isIntersecting = isIntersecting;
 	}
 
+	public boolean isIntersecting() {
+		return isIntersecting;
+	}
+
 }
