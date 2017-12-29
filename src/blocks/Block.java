@@ -1,9 +1,10 @@
 package blocks;
 
-import entities.Entity;
-import entities.TextureIndex;
+import collision.BoundingBox;
+import collision.Collider;
 import models.RawModel;
 import models.TexturedModel;
+import org.lwjgl.util.vector.Vector3f;
 import renderEngine.Loader;
 import renderEngine.ModelData;
 import renderEngine.OBJLoader;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
  * Created by AllTheMegahertz on 8/27/2017.
  */
 
-public class Block {
+public class Block implements Collider {
 
 	private static final Loader LOADER = new Loader();
 	private static final ModelData DATA = OBJLoader.loadOBJ("cube");
@@ -24,6 +25,8 @@ public class Block {
 	private static final TexturedModel TEXTURED_MODEL;
 
 	private final ArrayList<Face> faces;
+
+	private BoundingBox boundingBox;
 
 	static {
 		MODEL_TEXTURE.setNumberOfRows(16);
@@ -48,6 +51,8 @@ public class Block {
 
 		this.position = position;
 
+		boundingBox = new BoundingBox(this.position.getVector(), new Vector3f(0.5f, 0.5f, 0.5f));
+
 	}
 
 	public ArrayList<Face> getFaces() {
@@ -62,4 +67,7 @@ public class Block {
 		return position;
 	}
 
+	public BoundingBox getBoundingBox() {
+		return boundingBox;
+	}
 }
