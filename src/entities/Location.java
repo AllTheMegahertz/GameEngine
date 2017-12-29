@@ -60,4 +60,7 @@ public class Location {
 		return yaw;
 	}
 
+	public Vector3f getPosition() {
+		return position;
+	}
 }

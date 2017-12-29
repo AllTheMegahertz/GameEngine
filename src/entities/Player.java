@@ -16,8 +16,8 @@ public class Player extends PhysicsObject implements Collider {
 	private static final float JUMP_POWER = 0.15f;
 
 	//TODO: Implement a location class so that "world" does not need to be separately passed to the constructor
-	public Player(TexturedModel model, Vector3f position, World world, float rotX, float rotY, float rotZ, float scale) {
-		super(model, new BoundingBox(position, new Vector3f(0.5f, 0.5f, 0.5f)), position, world, rotX, rotY, rotZ, scale);
+	public Player(TexturedModel model, Location location, float rotX, float rotY, float rotZ, float scale) {
+		super(model, new BoundingBox(location.getPosition(), new Vector3f(0.5f, 0.5f, 0.5f)), location.getPosition(), location.getWorld(), rotX, rotY, rotZ, scale);
 	}
 
 	public void move() {

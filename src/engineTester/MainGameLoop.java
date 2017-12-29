@@ -57,7 +57,7 @@ public class MainGameLoop {
 
 		ModelData playerData = OBJLoader.loadOBJ("cube");
 		RawModel playerModel = loader.loadToVAO(playerData.getVertices(), playerData.getIndices(), playerData.getTextureCoords(), playerData.getNormals());
-		Player player = new Player(new TexturedModel(playerModel, new ModelTexture(loader.loadTexture("playerTexture"))), new Vector3f(20, 40, 20), world, 0, 0, 0, 1);
+		Player player = new Player(new TexturedModel(playerModel, new ModelTexture(loader.loadTexture("playerTexture"))), new Location(world, 20, 40, 20, 0, 0), 0, 0, 0, 1);
 
 //		world.addBlock(new Block(BlockType.Dirt, new BlockPosition(new int[] {150, 1, 219})));
 //		world.addBlock(new Block(BlockType.Dirt, new BlockPosition(new int[] {150, 1, 220})));
