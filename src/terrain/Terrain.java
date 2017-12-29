@@ -20,12 +20,12 @@ public class Terrain {
 	private ArrayList<Block> blocks = new ArrayList<Block>();
 	private HeightsGenerator heightsGenerator;
 
-	public Terrain(int x, int z, HeightsGenerator heightsGenerator) {
+	public Terrain(int x, int z) {
 
 		this.x = x;
 		this.z = z;
 
-		this.heightsGenerator = heightsGenerator;
+		this.heightsGenerator = new HeightsGenerator();
 		generateTerrain();
 
 	}
@@ -44,15 +44,20 @@ public class Terrain {
 
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
-				blocks.add(new Block(BlockType.Grass, new BlockPosition(i, getHeight(i, j), j)));
-				blocks.add(new Block(BlockType.Dirt, new BlockPosition(i, getHeight(i, j) - 1, j)));
-				blocks.add(new Block(BlockType.Dirt, new BlockPosition(i, getHeight(i, j) - 2, j)));
-				blocks.add(new Block(BlockType.Dirt, new BlockPosition(i, getHeight(i, j) - 3, j)));
-				blocks.add(new Block(BlockType.Stone, new BlockPosition(i, getHeight(i, j) - 4, j)));
-				blocks.add(new Block(BlockType.Stone, new BlockPosition(i, getHeight(i, j) - 5, j)));
-				blocks.add(new Block(BlockType.Stone, new BlockPosition(i, getHeight(i, j) - 6, j)));
-				blocks.add(new Block(BlockType.Stone, new BlockPosition(i, getHeight(i, j) - 7, j)));
-				blocks.add(new Block(BlockType.Stone, new BlockPosition(i, getHeight(i, j) - 8, j)));
+
+				int blockX = i + x * SIZE;
+				int blockZ = j + z * SIZE;
+
+				blocks.add(new Block(BlockType.Grass, new BlockPosition(blockX, getHeight(blockX, blockZ), blockZ)));
+				blocks.add(new Block(BlockType.Dirt, new BlockPosition(blockX, getHeight(blockX, blockZ) - 1, blockZ)));
+				blocks.add(new Block(BlockType.Dirt, new BlockPosition(blockX, getHeight(blockX, blockZ) - 2, blockZ)));
+				blocks.add(new Block(BlockType.Dirt, new BlockPosition(blockX, getHeight(blockX, blockZ) - 3, blockZ)));
+				blocks.add(new Block(BlockType.Stone, new BlockPosition(blockX, getHeight(blockX, blockZ) - 4, blockZ)));
+				blocks.add(new Block(BlockType.Stone, new BlockPosition(blockX, getHeight(blockX, blockZ) - 5, blockZ)));
+				blocks.add(new Block(BlockType.Stone, new BlockPosition(blockX, getHeight(blockX, blockZ) - 6, blockZ)));
+				blocks.add(new Block(BlockType.Stone, new BlockPosition(blockX, getHeight(blockX, blockZ) - 7, blockZ)));
+				blocks.add(new Block(BlockType.Stone, new BlockPosition(blockX, getHeight(blockX, blockZ) - 8, blockZ)));
+
 			}
 		}
 
@@ -62,7 +67,7 @@ public class Terrain {
 	private int getHeight(int x, int z) {
 
 		try {
-			return heights[x][z];
+			return heights[x - this.x * SIZE][z - this.z * SIZE];
 		}
 		catch (IndexOutOfBoundsException e) {
 			return 0;

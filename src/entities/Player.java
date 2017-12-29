@@ -13,7 +13,7 @@ import org.lwjgl.util.vector.Vector3f;
 public class Player extends PhysicsObject implements Collider {
 
 	private static final float MOVEMENT_SPEED = 7;
-	private static final float JUMP_POWER = 0.15f;
+	private static final float JUMP_POWER = 6;
 
 	//TODO: Implement a location class so that "world" does not need to be separately passed to the constructor
 	public Player(TexturedModel model, Location location, float rotX, float rotY, float rotZ, float scale) {
@@ -54,6 +54,7 @@ public class Player extends PhysicsObject implements Collider {
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) && onGround) {
+			System.out.println("jump");
 			ySpeed = JUMP_POWER;
 		}
 

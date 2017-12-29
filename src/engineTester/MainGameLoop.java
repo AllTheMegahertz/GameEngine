@@ -70,11 +70,13 @@ public class MainGameLoop {
 
 		Camera camera = new Camera(player);
 
-		HeightsGenerator heightsGenerator = new HeightsGenerator();
-
-		Terrain terrain = new Terrain(0, 0, heightsGenerator);
+		Terrain terrain = new Terrain(0, 0);
+		Terrain terrain2 = new Terrain(1, 0);
+		Terrain terrain3 = new Terrain(2, 0);
 
 		world.addBlocks(terrain.getBlocks());
+//		world.addBlocks(terrain2.getBlocks());
+//		world.addBlocks(terrain3.getBlocks());
 
 		//Game Loop
 		while (!Display.isCloseRequested()) {

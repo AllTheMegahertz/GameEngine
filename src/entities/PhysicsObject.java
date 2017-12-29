@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public abstract class PhysicsObject extends Entity {
 
-	private static final float GRAVITY = -0.5f;
+	private static final float GRAVITY = -15;
 
 	protected BoundingBox boundingBox;
 	protected Location location;
@@ -35,17 +35,19 @@ public abstract class PhysicsObject extends Entity {
 
 		setRotY(getRotY() - Mouse.getDX() * 0.1f);
 
-		float xDistance = xSpeed * DisplayManager.getFrameTime();
-		float zDistance = zSpeed * DisplayManager.getFrameTime();
-
-		float dx = xDistance * (float) Math.cos(Math.toRadians(getRotY())) + zDistance * (float) Math.sin(Math.toRadians(getRotY()));
-		float dz = zDistance * (float) Math.cos(Math.toRadians(getRotY())) - xDistance * (float) Math.sin(Math.toRadians(getRotY()));
-
 		if (!onGround) {
 			ySpeed += GRAVITY * DisplayManager.getFrameTime();
 		}
 
-		BoundingBox testBox = new BoundingBox(Vector3f.add(boundingBox.getCenter(), new Vector3f(dx, ySpeed, dz), new Vector3f()), boundingBox.getHalfExtent());
+		float xDistance = xSpeed * DisplayManager.getFrameTime();
+		float zDistance = zSpeed * DisplayManager.getFrameTime();
+
+		float dx = xDistance * (float) Math.cos(Math.toRadians(getRotY())) + zDistance * (float) Math.sin(Math.toRadians(getRotY()));
+		float dy = ySpeed * DisplayManager.getFrameTime();
+		float dz = zDistance * (float) Math.cos(Math.toRadians(getRotY())) - xDistance * (float) Math.sin(Math.toRadians(getRotY()));
+
+
+		BoundingBox testBox = new BoundingBox(Vector3f.add(boundingBox.getCenter(), new Vector3f(dx, dy, dz), new Vector3f()), boundingBox.getHalfExtent());
 		ArrayList<BoundingBox> collisions = location.getWorld().getColliderEngine().handleCollisions(testBox);
 
 		onGround = false;
@@ -61,6 +63,7 @@ public abstract class PhysicsObject extends Entity {
 
 			if (!xCheck && yCheck && !zCheck) {
 				setPosition(new Vector3f(getPosition().x, getPosition().y - boundingBox.getCollision(box).distance.y, getPosition().z));
+				dy = 0;
 				ySpeed = 0;
 				onGround = true;
 			}
@@ -71,7 +74,7 @@ public abstract class PhysicsObject extends Entity {
 
 		}
 
-		super.increasePosition(dx, ySpeed, dz);
+		super.increasePosition(dx, dy, dz);
 		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTime(), 0);
 
 		boundingBox.setCenter(new Vector3f(getPosition().x, getPosition().y, getPosition().z));
