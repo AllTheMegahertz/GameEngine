@@ -1,6 +1,6 @@
 package collision;
 
-import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector2f;
 
 /**
  * Created by AllTheMegahertz on 12/22/2017.
@@ -8,43 +8,32 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class BoundingBox {
 
-	private Vector3f center;
-	private Vector3f halfExtent;
+	public Vector2f v1;
+	public Vector2f v2;
 
-	public BoundingBox(Vector3f center, Vector3f halfExtent) {
-		this.center = center;
-		this.halfExtent = halfExtent;
+	public BoundingBox(Vector2f v1, Vector2f v2) {
+		this.v1 = v1;
+		this.v2 = v2;
 	}
 
-	public Collision getCollision(BoundingBox box) {
+	public static boolean intersect(BoundingBox a, Vector2f posA, BoundingBox b, Vector2f posB) {
 
-		Vector3f distance = Vector3f.sub(box.getCenter(), center, new Vector3f());
-		distance.x = Math.abs(distance.x);
-		distance.y = Math.abs(distance.y);
-		distance.z = Math.abs(distance.z);
+		Vector2f aV1 = Vector2f.add(a.v1, posA, new Vector2f());
+		Vector2f aV2 = Vector2f.add(a.v2, posA, new Vector2f());
+		Vector2f bV1 = Vector2f.add(b.v1, posB, new Vector2f());
+		Vector2f bV2 = Vector2f.add(b.v2, posB, new Vector2f());
 
-		Vector3f.sub(distance, Vector3f.add(halfExtent, box.getHalfExtent(), new Vector3f()), distance);
+		// The following section checks for intersections across two axes, but they are not necessarily x and y,
+		// depending on what type of box is being checked.
 
-		return new Collision(distance, distance.x < 0 && distance.y < 0 && distance.z < 0);
+		if (((aV1.x <= bV1.x && aV2.x > bV1.x) || (bV1.x <= aV1.x && bV2.x > aV1.x)) && // Check along x-axis
+			((aV1.y <= bV1.y && aV2.y > bV1.y) || (bV1.y <= aV1.y && bV2.y > aV1.y))) { // Check along y-axis
+			return true;
+		}
 
-	}
 
-	public void correctPosition(BoundingBox box, Collision data) {
-		//If not working, consider the signs
-		Vector3f correction = Vector3f.sub(box.getCenter(), center, new Vector3f());
-		Vector3f.add(center, correction, center);
-	}
+		return false;
 
-	public Vector3f getCenter() {
-		return center;
-	}
-
-	public void setCenter(Vector3f center) {
-		this.center = center;
-	}
-
-	public Vector3f getHalfExtent() {
-		return halfExtent;
 	}
 
 }

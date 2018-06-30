@@ -1,5 +1,6 @@
 package entities;
 
+import collision.Bounding;
 import collision.BoundingBox;
 import collision.Collider;
 import models.TexturedModel;
@@ -17,7 +18,7 @@ public class Player extends PhysicsObject implements Collider {
 
 	//TODO: Implement a location class so that "world" does not need to be separately passed to the constructor
 	public Player(TexturedModel model, Location location, float rotX, float rotY, float rotZ, float scale) {
-		super(model, new BoundingBox(location.getPosition(), new Vector3f(0.5f, 0.5f, 0.5f)), location.getPosition(), location.getWorld(), rotX, rotY, rotZ, scale);
+		super(model, location.getPosition(), location.getWorld(), rotX, rotY, rotZ, scale);
 	}
 
 	public void move() {
@@ -53,15 +54,14 @@ public class Player extends PhysicsObject implements Collider {
 			xSpeed = 0;
 		}
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) && onGround) {
-			System.out.println("jump");
+		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) && ySpeed == 0) {
 			ySpeed = JUMP_POWER;
 		}
 
 	}
 
-	public BoundingBox getBoundingBox() {
-		return boundingBox;
+	public Bounding getBounding() {
+		return bounding;
 	}
 
 }

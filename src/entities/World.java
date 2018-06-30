@@ -3,9 +3,7 @@ package entities;
 import blocks.Block;
 import blocks.BlockPosition;
 import blocks.BlockType;
-import collision.BoundingBox;
-import collision.Collider;
-import collision.ColliderEngine;
+import collision.CollisionEngine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,16 +20,16 @@ public class World {
 	private HashMap<BlockPosition, Block> blocks = new HashMap<BlockPosition, Block>();
 	private HashMap<BlockPosition, Block> openBlocks = new HashMap<BlockPosition, Block>();
 
-	private ColliderEngine colliderEngine;
+	private CollisionEngine collisionEngine;
 
-	public World(ColliderEngine colliderEngine) {
-		this.colliderEngine = colliderEngine;
+	public World(CollisionEngine collisionEngine) {
+		this.collisionEngine = collisionEngine;
 	}
 
 	//Only for use by addBlocks method
 	private void addBlock(Block block) {
-		blocks.put(block.getPosition(), block);
-		colliderEngine.addBoundingBox(block.getBoundingBox());
+		blocks.put(block.getBlockPosition(), block);
+		collisionEngine.addBounding(block.getBounding());
 	}
 
 	public void addBlocks(ArrayList<Block> blocks) {
@@ -102,7 +100,7 @@ public class World {
 
 		for (Block block : getBlocks()) {
 
-			BlockPosition position = block.getPosition();
+			BlockPosition position = block.getBlockPosition();
 
 			ArrayList<Block> surroundingBlocks = new ArrayList<Block>();
 
@@ -115,7 +113,7 @@ public class World {
 
 			for (Block sBlock : surroundingBlocks) {
 				if (sBlock.getBlockType() == BlockType.Air) {
-					openBlocks.put(block.getPosition(), block);
+					openBlocks.put(block.getBlockPosition(), block);
 					break;
 				}
 			}
@@ -124,8 +122,8 @@ public class World {
 
 	}
 
-	public ColliderEngine getColliderEngine() {
-		return colliderEngine;
+	public CollisionEngine getCollisionEngine() {
+		return collisionEngine;
 	}
 
 	public static int getMaxHeight() {

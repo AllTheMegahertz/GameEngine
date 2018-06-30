@@ -24,13 +24,13 @@ public class ChunkMeshBuilder {
 //		for (int chunkX = 0; chunkX < 208; chunkX++) {
 //			for (int chunkZ = 0; chunkZ < 208; chunkZ++) {
 //
-//				for (int x = 0; x < SIZE; x++) {
-//					for (int z = 0; z < SIZE; z++) {
-//						for (int y = 0; y < World.getMaxHeight(); y++) {
+//				for (int boxX = 0; boxX < SIZE; boxX++) {
+//					for (int boxZ = 0; boxZ < SIZE; boxZ++) {
+//						for (int boxY = 0; boxY < World.getMaxHeight(); boxY++) {
 //
-//							Block block = world.getBlock(new BlockPosition(chunkX * 16 + x, y, chunkZ * 16 + z));
+//							Block block = world.getBlock(new BlockPosition(chunkX * 16 + boxX, boxY, chunkZ * 16 + boxZ));
 //
-//							if (world.getBlock(new BlockPosition(chunkX * 16 + x - 1, y, chunkZ * 16 + z)).getBlockType() == BlockType.Air) {
+//							if (world.getBlock(new BlockPosition(chunkX * 16 + boxX - 1, boxY, chunkZ * 16 + boxZ)).getBlockType() == BlockType.Air) {
 //								block.getEntity().getModel().getRawModel()
 //							}
 //

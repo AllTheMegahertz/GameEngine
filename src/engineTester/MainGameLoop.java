@@ -1,31 +1,18 @@
 package engineTester;
 
-import blocks.Block;
-import blocks.BlockPosition;
-import blocks.BlockType;
-import collision.ColliderEngine;
+import collision.CollisionEngine;
 import entities.*;
 import guis.GuiRenderer;
 import guis.GuiTexture;
+import models.RawModel;
 import models.TexturedModel;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.*;
-import models.RawModel;
-import terrain.HeightsGenerator;
 import terrain.Terrain;
 import textures.ModelTexture;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by AllTheMegahertz on 8/15/2017.
@@ -41,8 +28,8 @@ public class MainGameLoop {
 
 		Loader loader = new Loader();
 
-		ColliderEngine colliderEngine = new ColliderEngine();
-		World world = new World(colliderEngine);
+		CollisionEngine collisionEngine = new CollisionEngine();
+		World world = new World(collisionEngine);
 
 		ModelTexture texture = new ModelTexture(loader.loadTexture("white"));
 

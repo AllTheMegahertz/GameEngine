@@ -1,5 +1,6 @@
 package blocks;
 
+import collision.Bounding;
 import collision.BoundingBox;
 import collision.Collider;
 import models.RawModel;
@@ -26,7 +27,7 @@ public class Block implements Collider {
 
 	private final ArrayList<Face> faces;
 
-	private BoundingBox boundingBox;
+	private Bounding bounding;
 
 	static {
 		MODEL_TEXTURE.setNumberOfRows(16);
@@ -51,7 +52,7 @@ public class Block implements Collider {
 
 		this.position = position;
 
-		boundingBox = new BoundingBox(this.position.getVector(), new Vector3f(0.5f, 0.5f, 0.5f));
+		bounding = new Bounding(this, 0.5f);
 
 	}
 
@@ -63,11 +64,15 @@ public class Block implements Collider {
 		return BlockType.blockType(blockID);
 	}
 
-	public BlockPosition getPosition() {
+	public Vector3f getPosition() {
+		return new Vector3f(position.position[0], position.position[1], position.position[2]);
+	}
+
+	public BlockPosition getBlockPosition() {
 		return position;
 	}
 
-	public BoundingBox getBoundingBox() {
-		return boundingBox;
+	public Bounding getBounding() {
+		return bounding;
 	}
 }
