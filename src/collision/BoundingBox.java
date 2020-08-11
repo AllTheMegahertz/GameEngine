@@ -16,7 +16,7 @@ public class BoundingBox {
 		this.v2 = v2;
 	}
 
-	public static boolean intersect(BoundingBox a, Vector2f posA, BoundingBox b, Vector2f posB) {
+	public static Vector2f intersect(BoundingBox a, Vector2f posA, BoundingBox b, Vector2f posB) {
 
 		Vector2f aV1 = Vector2f.add(a.v1, posA, new Vector2f());
 		Vector2f aV2 = Vector2f.add(a.v2, posA, new Vector2f());
@@ -26,13 +26,25 @@ public class BoundingBox {
 		// The following section checks for intersections across two axes, but they are not necessarily x and y,
 		// depending on what type of box is being checked.
 
-		if (((aV1.x <= bV1.x && aV2.x > bV1.x) || (bV1.x <= aV1.x && bV2.x > aV1.x)) && // Check along x-axis
-			((aV1.y <= bV1.y && aV2.y > bV1.y) || (bV1.y <= aV1.y && bV2.y > aV1.y))) { // Check along y-axis
-			return true;
+		// Check x-axis
+		float xError = 0;
+		if (aV1.x < bV2.x && aV2.x > bV1.x) {
+			xError = aV1.x - bV2.x;
+		}
+		else if (aV2.x > bV1.x && aV1.x < bV2.x) {
+			xError = bV1.x - aV2.x;
 		}
 
+		// Check Y-axis
+		float yError = 0;
+		if (aV1.x < bV2.x && aV2.x > bV1.x) {
+			yError = aV1.x - bV2.x;
+		}
+		else if (aV2.x > bV1.x && aV1.x < bV2.x) {
+			yError = bV1.x - aV2.x;
+		}
 
-		return false;
+		return new Vector2f(xError * -1, yError * -1);
 
 	}
 

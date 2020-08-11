@@ -8,11 +8,65 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import java.util.ArrayList;
+
 /**
  * Created by AllTheMegahertz on 8/16/2017.
  */
 
 public class Math {
+
+	public static float max(float[] arr) {
+
+		float max = arr[0];
+		for (int i = 0; i < arr.length; i++) {
+			max = java.lang.Math.max(max, arr[i]);
+		}
+
+		return max;
+
+	}
+
+	public static float min(float[] arr) {
+
+		float min = arr[0];
+		for (int i = 0; i < arr.length; i++) {
+			min = java.lang.Math.min(min, arr[i]);
+		}
+
+		return min;
+
+	}
+
+	public static Vector3f max(ArrayList<Vector3f> vectors) {
+
+		float[] x = new float[vectors.size()];
+		float[] y = new float[vectors.size()];
+		float[] z = new float[vectors.size()];
+		for (int i = 0; i < vectors.size(); i++) {
+			x[i] = vectors.get(i).x;
+			y[i] = vectors.get(i).y;
+			z[i] = vectors.get(i).z;
+		}
+
+		return new Vector3f(max(x), max(y), max(z));
+
+	}
+
+	public static Vector3f min(ArrayList<Vector3f> vectors) {
+
+		float[] x = new float[vectors.size()];
+		float[] y = new float[vectors.size()];
+		float[] z = new float[vectors.size()];
+		for (int i = 0; i < vectors.size(); i++) {
+			x[i] = vectors.get(i).x;
+			y[i] = vectors.get(i).y;
+			z[i] = vectors.get(i).z;
+		}
+
+		return new Vector3f(min(x), min(y), min(z));
+
+	}
 
 	public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry, float rz, float scale) {
 

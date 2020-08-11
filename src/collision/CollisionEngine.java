@@ -1,6 +1,7 @@
 package collision;
 
 import org.lwjgl.util.vector.Vector3f;
+import toolbox.Math;
 
 import java.util.ArrayList;
 
@@ -30,16 +31,15 @@ public class CollisionEngine {
 	//Handles collisions for one box with respect to all other boxes
 	public Vector3f handleCollisions(Bounding bounding, Vector3f test, Vector3f movement) {
 
-		ArrayList<Bounding> collisions = new ArrayList<>();
-		Vector3f correction = movement;
+		ArrayList<Vector3f> corrections = new ArrayList<>();
 
 		for (Bounding bounding2 : boundings) {
 			if (bounding != bounding2) {
-				Vector3f.add(handleCollision(bounding, bounding2, test), correction, correction);
+				corrections.add(handleCollision(bounding, bounding2, test));
 			}
 		}
 
-		return correction;
+		return Vector3f.add(Math.max(corrections), movement, new Vector3f());
 
 	}
 
